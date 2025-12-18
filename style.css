@@ -68,6 +68,17 @@ body{
         margin-bottom: 10px;
 }
 
+.timer-container{
+        display: flex;
+        gap: 10px;
+        align-items: center;
+}
+
+.timer{
+        font-weight: 600;
+        font-size: 30px;
+}
+
 .answer-container{
         display: flex;
         flex-direction: column;

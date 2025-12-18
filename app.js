@@ -1,4 +1,5 @@
 //DOM Element
+const timerEL = document.getElementById("timer")
 const startScreen = document.getElementById("start-screen");
 const quizScreen = document.getElementById("quiz-screen");
 const resultScreen = document.getElementById("result-screen");
@@ -66,6 +67,7 @@ const quizQuestions = [
 // QUIZ STATE VARS
 let currentQuestionIndex = 0;
 let score = 0;
+let timeLeft = 15
 let answersDisabled = false;
 
 totalQuestionsSpan.textContent = quizQuestions.length;
@@ -83,12 +85,14 @@ function startQuiz() {
         currentQuestionIndex = 0
         score = 0
         scoreSpan.textContent = 0
+        timeLeft = 15
 
         startScreen.classList.remove("active")
         quizScreen.classList.add("active")
 
         showQuestion()
-        
+        startTimer()
+        timerEL.style.color = "#666"
 }
 
 
@@ -122,6 +126,23 @@ function showQuestion() {
 
 // from here
 
+function startTimer() {
+        timerEL.textContent = timeLeft
+        timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEL.textContent = timeLeft
+
+                if (timeLeft <= 5) {
+                        timerEL.style.color = "#f44336"
+                }
+
+                if (timeLeft <= 0) {
+                        clearInterval(timerInterval)
+                        showResult()
+                }
+        }, 1000)
+}
+
 function selectAnswer() {
         // if (answersDisabled) return answersDisabled = true
 
@@ -148,6 +169,7 @@ function selectAnswer() {
                         showQuestion()
                 }else{
                         showResult()
+                        clearInterval(timerInterval)
                 }
         }, 1000)
 }
@@ -174,8 +196,10 @@ function showResult() {
 }
 
 function restartQuiz() {
-         resultScreen.classList.remove("active")
-
+        resultScreen.classList.remove("active")
+        timerEL.textContent = ""
+        startTimer()
+        clearInterval(timerInterval)
         startQuiz()
 
 }
